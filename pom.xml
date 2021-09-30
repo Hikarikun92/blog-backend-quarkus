@@ -127,6 +127,17 @@
     </build>
 
     <profiles>
+        <!-- To compile the project to native:
+         - Make sure GraalVM is installed and set to environment variable JAVA_HOME
+         - Make sure the native-image extension for GraalVM is installed (you can install it using "gu install native-image", where gu is under the <JAVA_HOME>\bin folder)
+         - A native toolkit chain for your operating system is installed. For Windows, it is the Visual C++ SDK (it comes with Visual Studio 2017 15.5.5 or later)
+
+         For Windows, first you need to set the proper environment variables to the MSVC compiler; this is done through script vcvars64.bat in the SDK folder.
+         In PowerShell, you can set it and run Maven with:
+           cmd /c 'call "<path-to-VC-SDK>\vcvars64.bat" && mvnw clean install -DskipTests -Pnative'
+         Where <path-to-VC-SDK> is the folder where the script is located. For VS 2019, for example:
+           cmd /c 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat" && mvnw clean install -DskipTests -Pnative'
+         -->
         <profile>
             <id>native</id>
             <activation>
