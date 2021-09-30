@@ -1,7 +1,6 @@
 package br.hikarikun92.blogbackendquarkus.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public final class CollectionUtils {
@@ -9,8 +8,16 @@ public final class CollectionUtils {
         throw new AssertionError();
     }
 
-    public static <T, R> List<R> convertList(List<T> input, Function<T, R> mapper) {
+    public static <T, R> List<R> convertList(Collection<T> input, Function<T, R> mapper) {
         final List<R> converted = new ArrayList<>(input.size());
+        for (T element : input) {
+            converted.add(mapper.apply(element));
+        }
+        return converted;
+    }
+
+    public static <T, R> Set<R> convertSet(Collection<T> input, Function<T, R> mapper) {
+        final Set<R> converted = new LinkedHashSet<>(input.size());
         for (T element : input) {
             converted.add(mapper.apply(element));
         }
