@@ -28,7 +28,7 @@ public class PostRepository {
     private Post toPost(PostEntity entity) {
         final UserEntity userEntity = entity.getUser();
         final User user = new User(userEntity.getId(), userEntity.getUsername());
-        return new Post(entity.getId(), entity.getTitle(), entity.getBody(), user, null);
+        return new Post(entity.getId(), entity.getTitle(), entity.getBody(), entity.getPublishedDate(), user, null);
     }
 
     public Optional<Post> findById(int id) {
@@ -52,9 +52,10 @@ public class PostRepository {
             final UserEntity commentUserEntity = commentEntity.getUser();
             final User commentUser = new User(commentUserEntity.getId(), commentUserEntity.getUsername());
 
-            return new Comment(commentEntity.getId(), commentEntity.getTitle(), commentEntity.getBody(), commentUser);
+            return new Comment(commentEntity.getId(), commentEntity.getTitle(), commentEntity.getBody(),
+                    commentEntity.getPublishedDate(), commentUser);
         });
 
-        return new Post(postEntity.getId(), postEntity.getTitle(), postEntity.getBody(), user, comments);
+        return new Post(postEntity.getId(), postEntity.getTitle(), postEntity.getBody(), postEntity.getPublishedDate(), user, comments);
     }
 }

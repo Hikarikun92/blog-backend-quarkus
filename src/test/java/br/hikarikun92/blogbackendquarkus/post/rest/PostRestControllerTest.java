@@ -7,6 +7,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 import static br.hikarikun92.blogbackendquarkus.factory.PostFactory.*;
@@ -15,6 +16,8 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 class PostRestControllerTest {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
     @Test
     void testFindById() {
         given()
@@ -55,12 +58,14 @@ class PostRestControllerTest {
         final String comments = commentsBuilder.append(']').toString();
 
         return "{\"body\":\"" + post.getBody() + "\",\"comments\":" + comments + ",\"id\":" + post.getId() +
-                ",\"title\":\"" + post.getTitle() + "\",\"user\":" + toJson(post.getUser()) + "}";
+                ",\"publishedDate\":\"" + FORMATTER.format(post.getPublishedDate()) + "\",\"title\":\"" + post.getTitle() +
+                "\",\"user\":" + toJson(post.getUser()) + "}";
     }
 
     private String toJson(Comment comment) {
-        return "{\"body\":\"" + comment.getBody() + "\",\"id\":" + comment.getId() +
-                ",\"title\":\"" + comment.getTitle() + "\",\"user\":" + toJson(comment.getUser()) + "}";
+        return "{\"body\":\"" + comment.getBody() + "\",\"id\":" + comment.getId() + ",\"publishedDate\":\"" +
+                FORMATTER.format(comment.getPublishedDate()) + "\",\"title\":\"" + comment.getTitle() +
+                "\",\"user\":" + toJson(comment.getUser()) + "}";
     }
 
     private String toJson(User user) {

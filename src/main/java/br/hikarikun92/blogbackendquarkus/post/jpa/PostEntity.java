@@ -5,13 +5,14 @@ import br.hikarikun92.blogbackendquarkus.user.jpa.UserEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "Post")
 @Table(name = "post")
 @Data
-@NamedQuery(name = "Post.findById", query = "select p from Post p join fetch p.user u left join fetch p.comments c left join fetch c.user where p.id = :id order by c.id")
+@NamedQuery(name = "Post.findById", query = "select p from Post p join fetch p.user u left join fetch p.comments c left join fetch c.user where p.id = :id order by c.publishedDate")
 @NamedQuery(name = "Post.findByUserId", query = "select p from Post p join fetch p.user u where u.id = :userId")
 public class PostEntity {
     @Id
@@ -23,6 +24,9 @@ public class PostEntity {
 
     @Column(nullable = false, columnDefinition = "text")
     private String body;
+
+    @Column(nullable = false, name = "published_date")
+    private LocalDateTime publishedDate;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")

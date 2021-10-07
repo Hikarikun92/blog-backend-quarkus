@@ -4,6 +4,7 @@ import br.hikarikun92.blogbackendquarkus.user.jpa.UserEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity(name = "Comment")
@@ -19,6 +20,9 @@ public class CommentEntity {
 
     @Column(nullable = false, columnDefinition = "text")
     private String body;
+
+    @Column(nullable = false, name = "published_date")
+    private LocalDateTime publishedDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false, name = "user_id")

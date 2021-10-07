@@ -6,6 +6,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
+import java.time.format.DateTimeFormatter;
+
 import static br.hikarikun92.blogbackendquarkus.factory.PostFactory.*;
 import static br.hikarikun92.blogbackendquarkus.factory.UserFactory.*;
 import static io.restassured.RestAssured.given;
@@ -13,6 +15,8 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 class UserRestControllerTest {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
     @Test
     void testFindAll() {
         final String expectedBody = "[" +
@@ -69,6 +73,7 @@ class UserRestControllerTest {
     }
 
     private String toJson(Post post) {
-        return "{\"body\":\"" + post.getBody() + "\",\"id\":" + post.getId() + ",\"title\":\"" + post.getTitle() + "\"}";
+        return "{\"body\":\"" + post.getBody() + "\",\"id\":" + post.getId() + ",\"publishedDate\":\"" +
+                FORMATTER.format(post.getPublishedDate()) + "\",\"title\":\"" + post.getTitle() + "\"}";
     }
 }
